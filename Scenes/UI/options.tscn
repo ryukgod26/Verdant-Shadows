@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://bvkenhdqoijfx"]
+
+[node name="Options" type="CanvasLayer" unique_id=834117118]
+visible = false
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=110090114]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tab_alignment = 1
+current_tab = 0
+drag_to_rearrange_enabled = true
+
+[node name="Video" type="VBoxContainer" parent="TabContainer" unique_id=33617144]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Audio" type="VBoxContainer" parent="TabContainer" unique_id=620300264]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="GamePlay" type="VBoxContainer" parent="TabContainer" unique_id=1833897729]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2

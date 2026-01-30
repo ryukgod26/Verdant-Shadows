@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://cgtcvkxpvksfa"]
+
+[ext_resource type="Script" uid="uid://dl766lqn4tbls" path="res://Scripts/UI/pause_menu.gd" id="1_rrvs5"]
+[ext_resource type="PackedScene" uid="uid://bvkenhdqoijfx" path="res://Scenes/UI/options.tscn" id="2_8rf44"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rf44"]
+bg_color = Color(0.18431373, 0.16078432, 0.10980392, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1644742683]
+process_mode = 3
+script = ExtResource("1_rrvs5")
+
+[node name="ButtonContainer" type="VBoxContainer" parent="." unique_id=20510160]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -130.0
+offset_right = 132.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 25
+
+[node name="Resume" type="Button" parent="ButtonContainer" unique_id=995338183]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_8rf44")
+text = "Resume"
+
+[node name="Options" type="Button" parent="ButtonContainer" unique_id=1780945932]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_8rf44")
+text = "Options"
+
+[node name="MainMenu" type="Button" parent="ButtonContainer" unique_id=408483685]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_8rf44")
+text = "Main Menu"
+
+[node name="Options" parent="." unique_id=834117118 instance=ExtResource("2_8rf44")]
+
+[connection signal="pressed" from="ButtonContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="ButtonContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="ButtonContainer/MainMenu" to="." method="_on_main_menu_pressed"]
