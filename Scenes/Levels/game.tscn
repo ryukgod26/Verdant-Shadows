@@ -2,6 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://cgtcvkxpvksfa" path="res://Scenes/UI/pause_menu.tscn" id="1_ds3o4"]
 
-[node name="Game" type="Node3D" unique_id=679548025]
+[node name="Game" type="Node2D" unique_id=956232634]
 
 [node name="PauseMenu" parent="." unique_id=1644742683 instance=ExtResource("1_ds3o4")]
