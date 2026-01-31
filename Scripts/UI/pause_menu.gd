@@ -12,6 +12,12 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Pause"):
 		paused = not paused
+		if paused:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+			$AnimationPlayer.play("open")
+		else:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+			$AnimationPlayer.play_backwards("open")
 
 func _on_resume_pressed() -> void:
 	paused = not paused

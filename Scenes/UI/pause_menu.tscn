@@ -10,9 +10,135 @@ corner_radius_top_right = 25
 corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 
+[sub_resource type="Animation" id="Animation_r2i2h"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pauselbl:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-204, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Menulbl:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(368, 59)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pauselbl:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Menulbl:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8rf44"]
+resource_name = "open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pauselbl:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-204, 0), Vector2(73, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Menulbl:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(368, 59), Vector2(147, 59)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Pauselbl:self_modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Menulbl:self_modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_r2i2h"]
+_data = {
+&"RESET": SubResource("Animation_r2i2h"),
+&"open": SubResource("Animation_8rf44")
+}
+
 [node name="PauseMenu" type="CanvasLayer" unique_id=1644742683]
 process_mode = 3
 script = ExtResource("1_rrvs5")
+
+[node name="Pauselbl" type="Label" parent="." unique_id=392654933]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = -204.0
+offset_right = -157.0
+offset_bottom = 23.0
+scale = Vector2(2, 2)
+text = "Pause"
+
+[node name="Menulbl" type="Label" parent="." unique_id=139218092]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 368.0
+offset_top = 59.0
+offset_right = 413.0
+offset_bottom = 82.0
+scale = Vector2(2, 2)
+text = "Menu"
 
 [node name="ButtonContainer" type="VBoxContainer" parent="." unique_id=20510160]
 anchors_preset = 8
@@ -47,6 +173,10 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_8rf44")
 text = "Main Menu"
 
 [node name="Options" parent="." unique_id=834117118 instance=ExtResource("2_8rf44")]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1867811925]
+libraries/ = SubResource("AnimationLibrary_r2i2h")
 
 [connection signal="pressed" from="ButtonContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="ButtonContainer/Options" to="." method="_on_options_pressed"]

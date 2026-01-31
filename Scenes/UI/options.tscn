@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://bvkenhdqoijfx"]
 
+[ext_resource type="Script" uid="uid://cwey6pqof5r0" path="res://Scripts/UI/options.gd" id="1_sncl2"]
+[ext_resource type="Script" uid="uid://dxj2syuht5d4c" path="res://Scripts/UI/HSlider.gd" id="2_jt3no"]
+
 [node name="Options" type="CanvasLayer" unique_id=834117118]
-visible = false
+script = ExtResource("1_sncl2")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=110090114]
 anchors_preset = 15
@@ -10,19 +13,61 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 drag_to_rearrange_enabled = true
 
 [node name="Video" type="VBoxContainer" parent="TabContainer" unique_id=33617144]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="Audio" type="VBoxContainer" parent="TabContainer" unique_id=620300264]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+
+[node name="MasterVollbl" type="Label" parent="TabContainer/Audio" unique_id=1448402623]
+layout_mode = 2
+text = "Master Volume"
+horizontal_alignment = 1
+
+[node name="MasterVol" type="HSlider" parent="TabContainer/Audio" unique_id=773452596]
+layout_mode = 2
+script = ExtResource("2_jt3no")
+
+[node name="MusicVollbl" type="Label" parent="TabContainer/Audio" unique_id=265235648]
+layout_mode = 2
+text = "Music Volume"
+horizontal_alignment = 1
+
+[node name="MusicVol" type="HSlider" parent="TabContainer/Audio" unique_id=26158129]
+layout_mode = 2
+script = ExtResource("2_jt3no")
+
+[node name="SfxVollbl" type="Label" parent="TabContainer/Audio" unique_id=796583423]
+layout_mode = 2
+text = "Sfx Volume"
+horizontal_alignment = 1
+
+[node name="SfxVol" type="HSlider" parent="TabContainer/Audio" unique_id=1112357515]
+layout_mode = 2
+script = ExtResource("2_jt3no")
 
 [node name="GamePlay" type="VBoxContainer" parent="TabContainer" unique_id=1833897729]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="Back" type="Button" parent="." unique_id=572443055]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Back"
+
+[connection signal="value_changed" from="TabContainer/Audio/MasterVol" to="." method="_on_master_vol_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MusicVol" to="." method="_on_music_vol_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/SfxVol" to="." method="_on_sfx_vol_value_changed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
