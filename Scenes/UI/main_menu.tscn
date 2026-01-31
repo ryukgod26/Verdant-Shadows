@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dimbms4ktk23e"]
 
 [ext_resource type="Script" uid="uid://dshenw33j3841" path="res://Scripts/UI/main_menu.gd" id="1_5wsvm"]
+[ext_resource type="FontFile" uid="uid://bh7mocnywvqh" path="res://assets/fonts/melon-pop.ttf" id="2_4pqbp"]
 [ext_resource type="Script" uid="uid://ngrseg7yvjs2" path="res://button.gd" id="2_i2xx2"]
 [ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_o14dv"]
 [ext_resource type="Texture2D" uid="uid://byo6an22asmi4" path="res://assets/icons/settings.svg" id="4_u7lva"]
@@ -31,36 +32,64 @@ corner_radius_bottom_left = 30
 [node name="MainMenu" type="CanvasLayer" unique_id=266428279]
 script = ExtResource("1_5wsvm")
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="." unique_id=262783107]
-anchors_preset = -1
-anchor_left = 0.2847222
-anchor_top = 0.2175926
-anchor_right = 0.6866319
-anchor_bottom = 0.52160496
+[node name="Control" type="Control" parent="." unique_id=1833421218]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Container" type="VBoxContainer" parent="Control" unique_id=1428482812]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -112.5
+offset_right = 160.0
+offset_bottom = 112.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 64
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Control/Container" unique_id=745582703]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_4pqbp")
+theme_override_font_sizes/font_size = 80
+text = "Verdant Shadows"
+horizontal_alignment = 1
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Control/Container" unique_id=2127791125]
+custom_minimum_size = Vector2(560, 0)
+layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 20
-metadata/_edit_use_anchors_ = true
+alignment = 1
 
-[node name="Start" type="Button" parent="ButtonsContainer" unique_id=1173952235]
+[node name="Start" type="Button" parent="Control/Container/ButtonsContainer" unique_id=1638619033]
 layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_o14dv")
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
 text = "START"
 script = ExtResource("2_i2xx2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ButtonsContainer" unique_id=9706064]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Container/ButtonsContainer" unique_id=1695924961]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Options" type="Button" parent="ButtonsContainer/HBoxContainer" unique_id=1356106111]
+[node name="Options" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=868155071]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
@@ -76,7 +105,7 @@ icon_alignment = 1
 text_direction = 1
 script = ExtResource("2_i2xx2")
 
-[node name="Quit" type="Button" parent="ButtonsContainer/HBoxContainer" unique_id=940425901]
+[node name="Quit" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=1134322276]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
@@ -91,10 +120,9 @@ icon = ExtResource("5_mrfpk")
 icon_alignment = 1
 script = ExtResource("2_i2xx2")
 
-[connection signal="mouse_entered" from="ButtonsContainer/Start" to="ButtonsContainer/Start" method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="ButtonsContainer/Start" to="ButtonsContainer/Start" method="_on_button_mouse_exited"]
-[connection signal="pressed" from="ButtonsContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="mouse_entered" from="ButtonsContainer/HBoxContainer/Options" to="ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="ButtonsContainer/HBoxContainer/Options" to="ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_exited"]
-[connection signal="mouse_entered" from="ButtonsContainer/HBoxContainer/Quit" to="ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="ButtonsContainer/HBoxContainer/Quit" to="ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_exited"]
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_exited"]
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
