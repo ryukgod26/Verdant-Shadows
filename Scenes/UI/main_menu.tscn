@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dimbms4ktk23e"]
 
 [ext_resource type="Script" uid="uid://dshenw33j3841" path="res://Scripts/UI/main_menu.gd" id="1_5wsvm"]
-[ext_resource type="FontFile" uid="uid://bh7mocnywvqh" path="res://assets/fonts/melon-pop.ttf" id="2_4pqbp"]
+[ext_resource type="FontFile" uid="uid://dj6nbyg73saln" path="res://assets/fonts/tropi-land-font.ttf" id="2_4pqbp"]
 [ext_resource type="Script" uid="uid://ngrseg7yvjs2" path="res://button.gd" id="2_i2xx2"]
 [ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_o14dv"]
 [ext_resource type="Texture2D" uid="uid://byo6an22asmi4" path="res://assets/icons/settings.svg" id="4_u7lva"]
@@ -9,9 +9,9 @@
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wsvm"]
 content_margin_left = 16.0
-content_margin_top = 32.0
+content_margin_top = 16.0
 content_margin_right = 16.0
-content_margin_bottom = 32.0
+content_margin_bottom = 16.0
 bg_color = Color(0.16470589, 0.16470589, 0.16470589, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
@@ -66,11 +66,11 @@ text = "Verdant Shadows"
 horizontal_alignment = 1
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="Control/Container" unique_id=2127791125]
-custom_minimum_size = Vector2(560, 0)
+custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="Start" type="Button" parent="Control/Container/ButtonsContainer" unique_id=1638619033]
@@ -78,7 +78,7 @@ layout_mode = 2
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
 theme_override_fonts/font = ExtResource("2_o14dv")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
@@ -87,14 +87,14 @@ script = ExtResource("2_i2xx2")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control/Container/ButtonsContainer" unique_id=1695924961]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 
 [node name="Options" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=868155071]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 40
+theme_override_constants/icon_max_width = 32
 theme_override_fonts/font = ExtResource("2_o14dv")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
@@ -110,7 +110,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 40
+theme_override_constants/icon_max_width = 32
 theme_override_fonts/font = ExtResource("2_o14dv")
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
