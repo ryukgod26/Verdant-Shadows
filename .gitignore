@@ -1,3 +1,54 @@
-# Godot 4+ specific ignores
+# ==================================================
+# Godot-specific
+# ==================================================
+
+# Godot cache and imported files
+.import/
 .godot/
-/android/
+*.import
+
+# Exported builds
+export/
+export_presets.cfg
+
+# Mono / C# (if you ever enable it)
+.mono/
+data_*/
+mono_crash.*.json
+
+# ==================================================
+# OS junk
+# ==================================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ==================================================
+# Editor & IDE
+# ==================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains
+.idea/
+
+# Vim
+*.swp
+
+# ==================================================
+# Logs & temp
+# ==================================================
+*.log
+*.tmp
