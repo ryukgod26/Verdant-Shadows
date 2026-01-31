@@ -5,6 +5,7 @@
 [ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_o14dv"]
 [ext_resource type="Texture2D" uid="uid://byo6an22asmi4" path="res://assets/icons/settings.svg" id="4_u7lva"]
 [ext_resource type="Texture2D" uid="uid://doksde63j88d5" path="res://assets/icons/exit.svg" id="5_mrfpk"]
+[ext_resource type="PackedScene" uid="uid://bvkenhdqoijfx" path="res://Scenes/UI/options.tscn" id="6_4pqbp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wsvm"]
 content_margin_left = 16.0
@@ -91,10 +92,14 @@ icon = ExtResource("5_mrfpk")
 icon_alignment = 1
 script = ExtResource("2_i2xx2")
 
+[node name="Options" parent="." unique_id=834117118 instance=ExtResource("6_4pqbp")]
+
 [connection signal="mouse_entered" from="ButtonsContainer/Start" to="ButtonsContainer/Start" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="ButtonsContainer/Start" to="ButtonsContainer/Start" method="_on_button_mouse_exited"]
 [connection signal="pressed" from="ButtonsContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="mouse_entered" from="ButtonsContainer/HBoxContainer/Options" to="ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="ButtonsContainer/HBoxContainer/Options" to="ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="ButtonsContainer/HBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="mouse_entered" from="ButtonsContainer/HBoxContainer/Quit" to="ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="ButtonsContainer/HBoxContainer/Quit" to="ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="ButtonsContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

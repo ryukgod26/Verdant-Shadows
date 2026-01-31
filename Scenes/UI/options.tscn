@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://bvkenhdqoijfx"]
 
+[ext_resource type="Script" uid="uid://cwey6pqof5r0" path="res://Scripts/UI/options.gd" id="1_sncl2"]
+
 [node name="Options" type="CanvasLayer" unique_id=834117118]
 visible = false
+script = ExtResource("1_sncl2")
 
 [node name="TabContainer" type="TabContainer" parent="." unique_id=110090114]
 anchors_preset = 15
@@ -26,3 +29,9 @@ metadata/_tab_index = 1
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="Back" type="Button" parent="." unique_id=993223430]
+offset_right = 8.0
+offset_bottom = 8.0
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
