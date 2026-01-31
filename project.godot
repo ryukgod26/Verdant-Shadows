@@ -15,9 +15,13 @@ run/main_scene="uid://dimbms4ktk23e"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+DialogueManager="*uid://c3rodes2l3gxb"
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+enabled=PackedStringArray("res://addons/dialogue_manager/plugin.cfg", "res://addons/godot_super-wakatime/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [input]
 
