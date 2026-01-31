@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://cjmkcj8hwm7ts" path="res://addons/sky_3d/src/TimeOfDay.gd" id="11_qmmh8"]
 [ext_resource type="Texture2D" uid="uid://54qa3nb4rxq5" path="res://assets/textures/grass_texture.jpg" id="12_xdwyp"]
 [ext_resource type="PackedScene" uid="uid://phs7xvjdl66m" path="res://Scenes/characters/character_body_3d.tscn" id="13_ahqd5"]
+[ext_resource type="PackedScene" uid="uid://byhnx7mg0u3nc" path="res://Scenes/Models/fire_flies.tscn" id="14_dw2ve"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t7urq"]
 shader = ExtResource("2_7l4mf")
@@ -43,7 +44,7 @@ shader_parameter/moon_texture_flip_u = false
 shader_parameter/moon_texture_flip_v = false
 shader_parameter/moon_size = 0.07
 shader_parameter/atm_moon_mie_tint = Color(0.137255, 0.184314, 0.292196, 1)
-shader_parameter/atm_moon_mie_intensity = 0.5066774970293045
+shader_parameter/atm_moon_mie_intensity = 0.5066774761676789
 shader_parameter/atm_moon_partial_mie_phase = Vector3(0.36, 1.64, 1.6)
 shader_parameter/starmap_color = Color(0.709804, 0.709804, 0.709804, 0.854902)
 shader_parameter/starmap_texture = ExtResource("8_gqwak")
@@ -67,8 +68,8 @@ shader_parameter/cirrus_absorption = 2.0
 shader_parameter/cirrus_sky_tint_fade = 0.5
 shader_parameter/cirrus_size = 1.0
 shader_parameter/cirrus_uv = Vector2(0.16, 0.11)
-shader_parameter/cirrus_position1 = Vector2(0.053338837, 0.053338837)
-shader_parameter/cirrus_position2 = Vector2(0.053338837, 0.053338837)
+shader_parameter/cirrus_position1 = Vector2(0.03889048, 0.03889048)
+shader_parameter/cirrus_position2 = Vector2(0.03889048, 0.03889048)
 shader_parameter/cirrus_texture = ExtResource("3_xdwyp")
 shader_parameter/cumulus_visible = true
 shader_parameter/cumulus_intensity = 0.6
@@ -78,7 +79,7 @@ shader_parameter/cumulus_absorption = 2.0
 shader_parameter/cumulus_noise_freq = 2.7
 shader_parameter/cumulus_sky_tint_fade = 0.0
 shader_parameter/cumulus_size = 0.5
-shader_parameter/cumulus_position = Vector2(0.26669836, 0.26669836)
+shader_parameter/cumulus_position = Vector2(0.19445641, 0.19445641)
 shader_parameter/cumulus_texture = ExtResource("4_ahqd5")
 shader_parameter/cumulus_partial_mie_phase = Vector3(0.957564, 1.042436, 0.412)
 shader_parameter/cumulus_mie_intensity = 1.0
@@ -116,7 +117,7 @@ uv1_scale = Vector3(50, 50, 50)
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ahqd5"]
 data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
 
-[node name="Node3D" type="Node3D" unique_id=961073756]
+[node name="Game" type="Node3D" unique_id=961073756]
 
 [node name="PauseMenu" parent="." unique_id=1644742683 instance=ExtResource("1_ds3o4")]
 
@@ -170,3 +171,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_7l4mf")
 shape = SubResource("ConcavePolygonShape3D_ahqd5")
 
 [node name="CharacterBody3D" parent="." unique_id=1741758508 instance=ExtResource("13_ahqd5")]
+
+[node name="FireFlies" type="Node3D" parent="." unique_id=608247985]
+
+[node name="FireFlies" parent="FireFlies" unique_id=1023716538 instance=ExtResource("14_dw2ve")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9888122, 0.8423232, 0)
