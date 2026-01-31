@@ -1,6 +1,6 @@
 extends Button
 
-var SCALE_ON_HOVER = 1.02
+var SCALE_ON_HOVER = 1.01
 
 func _on_button_mouse_entered() -> void:
 	pivot_offset = size/2

@@ -58,7 +58,7 @@ grow_vertical = 2
 theme_override_constants/separation = 64
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Control/Container" unique_id=745582703]
+[node name="Title" type="Label" parent="Control/Container" unique_id=745582703]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_4pqbp")
 theme_override_font_sizes/font_size = 80
@@ -122,7 +122,10 @@ script = ExtResource("2_i2xx2")
 
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/Start" to="." method="_on_start_pressed"]
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
