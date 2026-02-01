@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://phs7xvjdl66m"]
 
 [ext_resource type="Script" uid="uid://bumrjmgbs6wrl" path="res://Scenes/characters/character_body_3d.gd" id="1_mn5ak"]
+[ext_resource type="Script" uid="uid://cliddf0xmhd0t" path="res://Scenes/characters/control.gd" id="2_a1n64"]
+[ext_resource type="Script" uid="uid://d0jfduuwaqapw" path="res://Scenes/characters/hud.gd" id="3_0i7f0"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ypj0p"]
 
@@ -20,3 +22,17 @@ shape = SubResource("CapsuleShape3D_ypj0p")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1424031551]
 transform = Transform3D(1, 0, 0, 0, 0.9921432, 0.12510815, 0, -0.12510815, 0.9921432, 0, 1.6400166, 0)
+
+[node name="Control" type="Control" parent="." unique_id=403251840]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_a1n64")
+
+[node name="HUD" type="Control" parent="." unique_id=2068257361]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_0i7f0")

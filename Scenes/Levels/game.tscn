@@ -68,8 +68,8 @@ shader_parameter/cirrus_absorption = 2.0
 shader_parameter/cirrus_sky_tint_fade = 0.5
 shader_parameter/cirrus_size = 1.0
 shader_parameter/cirrus_uv = Vector2(0.16, 0.11)
-shader_parameter/cirrus_position1 = Vector2(0.25555202, 0.25555202)
-shader_parameter/cirrus_position2 = Vector2(0.25555202, 0.25555202)
+shader_parameter/cirrus_position1 = Vector2(0.20037724, 0.20037724)
+shader_parameter/cirrus_position2 = Vector2(0.20037724, 0.20037724)
 shader_parameter/cirrus_texture = ExtResource("3_xdwyp")
 shader_parameter/cumulus_visible = true
 shader_parameter/cumulus_intensity = 0.6
@@ -79,7 +79,7 @@ shader_parameter/cumulus_absorption = 2.0
 shader_parameter/cumulus_noise_freq = 2.7
 shader_parameter/cumulus_sky_tint_fade = 0.0
 shader_parameter/cumulus_size = 0.5
-shader_parameter/cumulus_position = Vector2(1.2776564, 1.2776564)
+shader_parameter/cumulus_position = Vector2(6.0021405, 6.0021405)
 shader_parameter/cumulus_texture = ExtResource("4_ahqd5")
 shader_parameter/cumulus_partial_mie_phase = Vector3(0.957564, 1.042436, 0.412)
 shader_parameter/cumulus_mie_intensity = 1.0
@@ -112,7 +112,7 @@ size = Vector2(200, 200)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l4mf"]
 albedo_texture = ExtResource("12_xdwyp")
-uv1_scale = Vector3(50, 50, 50)
+uv1_scale = Vector3(200, 200, 200)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ahqd5"]
 data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
@@ -145,7 +145,7 @@ curve = SubResource("Curve_qmmh8")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dw2ve"]
 emission_shape = 3
-emission_box_extents = Vector3(30, 10, 30)
+emission_box_extents = Vector3(100, 10, 100)
 spread = 180.0
 initial_velocity_min = 1.5
 initial_velocity_max = 5.0
@@ -168,7 +168,10 @@ transparency = 1
 albedo_color = Color(1, 1, 0.21960784, 1)
 emission_enabled = true
 emission = Color(1, 1, 0.21960784, 1)
-billboard_mode = 1
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
 proximity_fade_enabled = true
 
 [sub_resource type="SphereMesh" id="SphereMesh_8u2a7"]
@@ -239,8 +242,9 @@ shape = SubResource("ConcavePolygonShape3D_ahqd5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3126447, 0.51561826, 0)
 
 [node name="FireFlies" type="GPUParticles3D" parent="." unique_id=755843833]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.602609, 12.898385, 1.4305115e-06)
-amount = 20
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.602609, 0.8188629, 1.4305115e-06)
+amount = 400
 lifetime = 10.0
+visibility_aabb = AABB(-100, 0, -100, 200, 5, 200)
 process_material = SubResource("ParticleProcessMaterial_dw2ve")
 draw_pass_1 = SubResource("SphereMesh_8u2a7")
