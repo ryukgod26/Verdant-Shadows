@@ -23,8 +23,8 @@ func _on_master_vol_value_changed(value: float) -> void:
 
 func _on_music_vol_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(music_vol_bus,linear_to_db(value))
-	AudioServer.set_bus_mute(master_vol_bus,value<.05)
+	AudioServer.set_bus_mute(music_vol_bus,value<.05)
 
 func _on_sfx_vol_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(sfx_vol_bus,linear_to_db(value))
-	AudioServer.set_bus_mute(master_vol_bus,value<.05)
+	AudioServer.set_bus_mute(sfx_vol_bus,value<.05)

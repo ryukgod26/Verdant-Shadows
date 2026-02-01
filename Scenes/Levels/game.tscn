@@ -13,7 +13,6 @@
 [ext_resource type="Script" uid="uid://cjmkcj8hwm7ts" path="res://addons/sky_3d/src/TimeOfDay.gd" id="11_qmmh8"]
 [ext_resource type="Texture2D" uid="uid://54qa3nb4rxq5" path="res://assets/textures/grass_texture.jpg" id="12_xdwyp"]
 [ext_resource type="PackedScene" uid="uid://phs7xvjdl66m" path="res://Scenes/characters/character_body_3d.tscn" id="13_ahqd5"]
-[ext_resource type="PackedScene" uid="uid://byhnx7mg0u3nc" path="res://Scenes/Models/fire_flies.tscn" id="14_dw2ve"]
 [ext_resource type="PackedScene" uid="uid://dqqq8x737yhoj" path="res://Scenes/Models/RuinStones/blue_stone.tscn" id="15_8u2a7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t7urq"]
@@ -69,8 +68,8 @@ shader_parameter/cirrus_absorption = 2.0
 shader_parameter/cirrus_sky_tint_fade = 0.5
 shader_parameter/cirrus_size = 1.0
 shader_parameter/cirrus_uv = Vector2(0.16, 0.11)
-shader_parameter/cirrus_position1 = Vector2(0.75875735, 0.75875735)
-shader_parameter/cirrus_position2 = Vector2(0.75875735, 0.75875735)
+shader_parameter/cirrus_position1 = Vector2(0.6777056, 0.6777056)
+shader_parameter/cirrus_position2 = Vector2(0.6777056, 0.6777056)
 shader_parameter/cirrus_texture = ExtResource("3_xdwyp")
 shader_parameter/cumulus_visible = true
 shader_parameter/cumulus_intensity = 0.6
@@ -80,7 +79,7 @@ shader_parameter/cumulus_absorption = 2.0
 shader_parameter/cumulus_noise_freq = 2.7
 shader_parameter/cumulus_sky_tint_fade = 0.0
 shader_parameter/cumulus_size = 0.5
-shader_parameter/cumulus_position = Vector2(3.7941415, 3.7941415)
+shader_parameter/cumulus_position = Vector2(18.428984, 18.428984)
 shader_parameter/cumulus_texture = ExtResource("4_ahqd5")
 shader_parameter/cumulus_partial_mie_phase = Vector3(0.957564, 1.042436, 0.412)
 shader_parameter/cumulus_mie_intensity = 1.0
@@ -117,6 +116,67 @@ uv1_scale = Vector3(50, 50, 50)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ahqd5"]
 data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
+
+[sub_resource type="Curve" id="Curve_dw2ve"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8u2a7"]
+curve = SubResource("Curve_dw2ve")
+
+[sub_resource type="Gradient" id="Gradient_e8oij"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_gqwak"]
+gradient = SubResource("Gradient_e8oij")
+
+[sub_resource type="Gradient" id="Gradient_3jpjc"]
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_x1q52"]
+gradient = SubResource("Gradient_3jpjc")
+
+[sub_resource type="Curve" id="Curve_qmmh8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_t7urq"]
+curve = SubResource("Curve_qmmh8")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dw2ve"]
+emission_shape = 3
+emission_box_extents = Vector3(30, 10, 30)
+spread = 180.0
+initial_velocity_min = 1.5
+initial_velocity_max = 5.0
+orbit_velocity_min = 0.1000001
+orbit_velocity_max = 0.1000001
+gravity = Vector3(0, 0, 0)
+damping_min = 0.1
+damping_max = 0.2
+scale_min = 0.01
+scale_max = 0.02
+color_ramp = SubResource("GradientTexture1D_x1q52")
+color_initial_ramp = SubResource("GradientTexture1D_gqwak")
+alpha_curve = SubResource("CurveTexture_8u2a7")
+emission_curve = SubResource("CurveTexture_t7urq")
+turbulence_enabled = true
+turbulence_influence_max = 0.201
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw2ve"]
+transparency = 1
+albedo_color = Color(1, 1, 0.21960784, 1)
+emission_enabled = true
+emission = Color(1, 1, 0.21960784, 1)
+billboard_mode = 1
+proximity_fade_enabled = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_8u2a7"]
+material = SubResource("StandardMaterial3D_dw2ve")
+radius = 0.1
+height = 0.2
+radial_segments = 16
+rings = 8
 
 [node name="Game" type="Node3D" unique_id=961073756]
 
@@ -173,12 +233,13 @@ shape = SubResource("ConcavePolygonShape3D_ahqd5")
 
 [node name="CharacterBody3D" parent="." unique_id=1741758508 instance=ExtResource("13_ahqd5")]
 
-[node name="FireFlies" type="Node3D" parent="." unique_id=608247985]
-
-[node name="FireFlies" parent="FireFlies" unique_id=1023716538 instance=ExtResource("14_dw2ve")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9888122, 1.7258924, 0)
-
 [node name="RuinStones" type="Node3D" parent="." unique_id=188813267]
 
 [node name="BlueStone" parent="RuinStones" unique_id=661430774 instance=ExtResource("15_8u2a7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3126447, 0.51561826, 0)
+
+[node name="FireFlies" type="GPUParticles3D" parent="." unique_id=755843833]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.602609, 12.898385, 1.4305115e-06)
+amount = 25
+process_material = SubResource("ParticleProcessMaterial_dw2ve")
+draw_pass_1 = SubResource("SphereMesh_8u2a7")
