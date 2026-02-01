@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://c8mtvnt631y6"]
+
+[ext_resource type="Script" uid="uid://gy8jy8nlkogu" path="res://Scenes/IntroScene/IntroController.gd" id="1_qfgiq"]
+
+[node name="Introscene" type="Node2D" unique_id=1984669290]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2062094911]
+
+[node name="DialogBox" type="Panel" parent="CanvasLayer" unique_id=109862903]
+offset_left = -2.0
+offset_top = 438.0
+offset_right = 1148.0
+offset_bottom = 640.0
+metadata/_edit_use_anchors_ = true
+
+[node name="DialogText" type="Label" parent="CanvasLayer/DialogBox" unique_id=1934669857]
+layout_mode = 0
+offset_left = -1.0
+offset_right = 1146.0
+offset_bottom = 192.0
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=983795442]
+
+[node name="IntroController" type="Node" parent="." unique_id=1538720605]
+script = ExtResource("1_qfgiq")
