@@ -22,7 +22,7 @@ class_name GrassClump
 		if Engine.is_editor_hint(): _rebuild()
 
 @export_group("Appearance")
-@export var grass_color: Color = Color(0.25, 0.55, 0.15):
+@export var grass_color: Color = Color(0.45, 0.75, 0.35):  # Lighter green
 	set(v):
 		grass_color = v
 		if Engine.is_editor_hint(): _rebuild()
@@ -62,7 +62,7 @@ func _create_blades(rng: RandomNumberGenerator) -> void:
 		
 		var height = rng.randf_range(blade_height_min, blade_height_max)
 		var mesh = BoxMesh.new()
-		mesh.size = Vector3(0.04, height, 0.015)
+		mesh.size = Vector3(0.02, height, 0.008)  # Thinner blades
 		blade.mesh = mesh
 		
 		# Position within spread radius
@@ -110,7 +110,7 @@ static func _get_or_create_wind_shader() -> Shader:
 shader_type spatial;
 render_mode cull_disabled;
 
-uniform vec3 grass_color : source_color = vec3(0.25, 0.55, 0.15);
+uniform vec3 grass_color : source_color = vec3(0.45, 0.75, 0.35);
 uniform float wind_strength : hint_range(0.0, 1.0) = 0.3;
 uniform float wind_speed : hint_range(0.0, 5.0) = 2.0;
 uniform float wind_phase_offset : hint_range(0.0, 6.28) = 0.0;

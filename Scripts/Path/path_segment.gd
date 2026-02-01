@@ -43,20 +43,21 @@ static func _init_materials() -> void:
 	if materials_initialized:
 		return
 	
-	# Main path - weathered stone
+	# Main path - solid stone color
 	path_material = StandardMaterial3D.new()
-	path_material.albedo_color = Color(0.4, 0.38, 0.35)
+	path_material.albedo_color = Color(0.35, 0.32, 0.28)
 	path_material.roughness = 0.9
+	path_material.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED if false else BaseMaterial3D.SHADING_MODE_PER_PIXEL
 	
-	# Edge - slightly darker stone
+	# Edge - darker stone
 	edge_material = StandardMaterial3D.new()
-	edge_material.albedo_color = Color(0.3, 0.28, 0.25)
+	edge_material.albedo_color = Color(0.25, 0.22, 0.18)
 	edge_material.roughness = 0.85
 	
-	# Ground - dark earth
+	# Ground - solid dark earth
 	ground_material = StandardMaterial3D.new()
-	ground_material.albedo_color = Color(0.15, 0.12, 0.08)
-	ground_material.roughness = 0.95
+	ground_material.albedo_color = Color(0.12, 0.1, 0.06)
+	ground_material.roughness = 1.0
 	
 	materials_initialized = true
 
@@ -108,11 +109,11 @@ func _create_ground_plane(side: int) -> void:
 	var ground = MeshInstance3D.new()
 	ground.name = "Ground_" + ("Left" if side == -1 else "Right")
 	var ground_mesh = BoxMesh.new()
-	ground_mesh.size = Vector3(40.0, 0.2, SEGMENT_LENGTH)  # Doubled width for larger forest
+	ground_mesh.size = Vector3(50.0, 0.1, SEGMENT_LENGTH)
 	ground.mesh = ground_mesh
 	ground.position = Vector3(
-		side * (PATH_WIDTH / 2 + 20.5),  # Adjusted for larger ground
-		-0.35,
+		side * (PATH_WIDTH / 2 + 25.0),
+		-0.55,  # Lower to avoid z-fighting
 		-SEGMENT_LENGTH / 2
 	)
 	ground.material_override = ground_material

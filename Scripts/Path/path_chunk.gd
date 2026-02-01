@@ -4,25 +4,31 @@ class_name PathChunk
 # === CHUNK CONFIGURATION ===
 const CHUNK_LENGTH := 20.0
 const PATH_WIDTH := 6.0
-const DECORATION_WIDTH := 30.0  # Doubled from 15 for larger forest area
+const DECORATION_WIDTH := 15.0  # Reduced for performance
 const LANE_WIDTH := 2.0  # Width of each lane
 
-# Decoration density per chunk (per side) - increased for larger forest
-const TREES_PER_SIDE := 12
-const GRASS_PER_SIDE := 20
-const ROCKS_PER_SIDE := 5
-const BUSHES_PER_SIDE := 10
+# Decoration density per chunk (per side) - optimized
+const TREES_PER_SIDE := 2
+const GRASS_PER_SIDE := 5  # Shader grass is performant
+const ROCKS_PER_SIDE := 1
+const BUSHES_PER_SIDE := 2
 
 # Coin settings
-const COIN_ROWS_PER_CHUNK := 4  # How many rows of coins per chunk
-const COIN_HEIGHT := 1.0  # Height above ground
+const COIN_HEIGHT := 1.0
+const COIN_SPAWN_CHANCE := 0.3  # 30% chance for coin stream
+const STREAM_LENGTH := 6  # Coins in a stream
+const STREAM_SPACING := 2.5  # Distance between coins in stream
+
+# Spawn config
+static var spawn_decorations := true
+static var spawn_coins := true
 
 # Scripts (preloaded)
 const PathSegmentScript = preload("res://Scripts/Path/path_segment.gd")
-const JungleTreeScript = preload("res://Scripts/Decorations/jungle_tree.gd")
-const GrassClumpScript = preload("res://Scripts/Decorations/grass_clump.gd")
-const JungleRockScript = preload("res://Scripts/Decorations/jungle_rock.gd")
-const JungleBushScript = preload("res://Scripts/Decorations/jungle_bush.gd")
+const SimpleTreeScript = preload("res://Scripts/Decorations/simple_tree.gd")
+const ShaderGrassScript = preload("res://Scripts/Decorations/shader_grass.gd")
+const SimpleRockScript = preload("res://Scripts/Decorations/simple_rock.gd")
+const SimpleBushScript = preload("res://Scripts/Decorations/simple_bush.gd")
 const CoinScript = preload("res://Scripts/Collectibles/coin.gd")
 
 # References
@@ -31,13 +37,12 @@ var path_segment: Node3D
 var decorations_container: Node3D
 var coins_container: Node3D
 
-# Coin pattern - set by PathManager
-static var spawn_coins := true
-
 func _ready() -> void:
 	_create_path_segment()
-	_create_decorations_container()
-	_generate_decorations()
+	_create_walls()
+	if spawn_decorations:
+		_create_decorations_container()
+		_generate_decorations()
 	if spawn_coins:
 		_create_coins()
 
@@ -46,6 +51,21 @@ func _create_path_segment() -> void:
 	path_segment.set_script(PathSegmentScript)
 	path_segment.name = "PathSegment"
 	add_child(path_segment)
+
+func _create_walls() -> void:
+	# Invisible walls on both sides of straight path
+	for side in [-1, 1]:
+		var wall = StaticBody3D.new()
+		wall.name = "Wall_" + ("Left" if side == -1 else "Right")
+
+		var collision = CollisionShape3D.new()
+		var shape = BoxShape3D.new()
+		shape.size = Vector3(0.5, 3.0, CHUNK_LENGTH + 1.0)
+		collision.shape = shape
+
+		wall.position = Vector3(side * (PATH_WIDTH / 2 + 0.25), 1.5, -CHUNK_LENGTH / 2)
+		wall.add_child(collision)
+		add_child(wall)
 
 func _create_decorations_container() -> void:
 	decorations_container = Node3D.new()
@@ -65,27 +85,27 @@ func _generate_side_decorations(rng: RandomNumberGenerator, side: int) -> void:
 	
 	# Trees
 	for i in range(TREES_PER_SIDE):
-		var tree = JungleTreeScript.create_random(rng)
+		var tree = SimpleTreeScript.create_random(rng)
 		tree.position = _get_decoration_position(rng, base_x, side, 2.0, DECORATION_WIDTH)
 		tree.rotation.y = rng.randf() * TAU
 		decorations_container.add_child(tree)
 	
-	# Grass
+	# Grass (shader-based)
 	for i in range(GRASS_PER_SIDE):
-		var grass = GrassClumpScript.create_random(rng)
+		var grass = ShaderGrassScript.create_random(rng)
 		grass.position = _get_decoration_position(rng, base_x, side, 0.5, DECORATION_WIDTH)
 		decorations_container.add_child(grass)
 	
 	# Rocks
 	for i in range(ROCKS_PER_SIDE):
-		var rock = JungleRockScript.create_random(rng)
+		var rock = SimpleRockScript.create_random(rng)
 		rock.position = _get_decoration_position(rng, base_x, side, 1.0, DECORATION_WIDTH * 0.7)
 		rock.rotation.y = rng.randf() * TAU
 		decorations_container.add_child(rock)
 	
 	# Bushes
 	for i in range(BUSHES_PER_SIDE):
-		var bush = JungleBushScript.create_random(rng)
+		var bush = SimpleBushScript.create_random(rng)
 		bush.position = _get_decoration_position(rng, base_x, side, 1.5, DECORATION_WIDTH * 0.8)
 		bush.rotation.y = rng.randf() * TAU
 		decorations_container.add_child(bush)
@@ -101,34 +121,38 @@ func _create_coins() -> void:
 	add_child(coins_container)
 	
 	var rng = RandomNumberGenerator.new()
-	rng.seed = hash(chunk_index * 777)  # Different seed than decorations
+	rng.seed = hash(chunk_index * 777)
 	
-	var row_spacing = CHUNK_LENGTH / (COIN_ROWS_PER_CHUNK + 1)
+	# Chance to spawn a coin stream
+	if rng.randf() > COIN_SPAWN_CHANCE:
+		return
 	
-	for row in range(COIN_ROWS_PER_CHUNK):
-		var z_pos = -row_spacing * (row + 1)
-		
-		# Randomly choose a coin pattern for this row
-		var pattern = rng.randi() % 5
-		
-		match pattern:
-			0:  # Single coin in center
-				_spawn_coin(Vector3(0, COIN_HEIGHT, z_pos))
-			1:  # Single coin on left
-				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
-			2:  # Single coin on right
-				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
-			3:  # All three lanes
-				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
-				_spawn_coin(Vector3(0, COIN_HEIGHT, z_pos))
-				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
-			4:  # Two coins (left + right)
-				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
-				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
+	# Pick a lane: -1 (left), 0 (center), 1 (right)
+	var lane = rng.randi_range(-1, 1)
+	var x_pos = lane * LANE_WIDTH
+	
+	# Starting Z position
+	var start_z = -2.0
+	
+	# Create stream of coins
+	for i in range(STREAM_LENGTH):
+		var z_pos = start_z - (i * STREAM_SPACING)
+		if z_pos < -CHUNK_LENGTH + 1.0:
+			break
+		_spawn_coin(Vector3(x_pos, COIN_HEIGHT, z_pos))
 
 func _spawn_coin(pos: Vector3) -> void:
 	var coin = CoinScript.create(pos)
 	coins_container.add_child(coin)
+
+# === DECORATIONS CONTROL ===
+func _hide_decorations() -> void:
+	if decorations_container:
+		decorations_container.visible = false
+
+func set_decorations_visible(visible: bool) -> void:
+	if decorations_container:
+		decorations_container.visible = visible
 
 # === LIGHTING CONTROL ===
 func set_light_mode(mode: int) -> void:

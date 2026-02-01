@@ -27,12 +27,12 @@ class_name Coin
 		if Engine.is_editor_hint(): _update_materials()
 
 @export_group("Animation")
-@export var rotate_speed := 2.0
-@export var bob_speed := 2.0
-@export var bob_height := 0.15
+@export var rotate_speed := 3.0
+@export var bob_speed := 2.5
+@export var bob_height := 0.1
 
 @export_group("Light")
-@export var light_enabled := true:
+@export var light_enabled := false:  # Disabled for performance
 	set(v):
 		light_enabled = v
 		if Engine.is_editor_hint(): _rebuild()
@@ -40,11 +40,11 @@ class_name Coin
 	set(v):
 		light_color = v
 		if _light: _light.light_color = v
-@export var light_energy := 0.6:
+@export var light_energy := 0.4:
 	set(v):
 		light_energy = v
 		if _light: _light.light_energy = v
-@export var light_range := 2.5:
+@export var light_range := 1.5:
 	set(v):
 		light_range = v
 		if _light: _light.omni_range = v
@@ -63,8 +63,12 @@ func _ready() -> void:
 	_initial_y = position.y
 	_rebuild()
 	
-	# Connect signal for collection
+	# Mark as coin for detection
+	set_meta("is_coin", true)
+	
+	# Connect signals for collection
 	body_entered.connect(_on_body_entered)
+	area_entered.connect(_on_area_entered)
 
 func _rebuild() -> void:
 	# Clear existing
@@ -97,28 +101,28 @@ func _create_mesh() -> void:
 
 func _create_material() -> void:
 	_material = StandardMaterial3D.new()
-	_material.albedo_color = coin_color
+	_material.albedo_color = Color(1.0, 0.8, 0.3)
 	
-	# Apply texture if provided
-	if coin_texture:
-		_material.albedo_texture = coin_texture
+	# Realistic gold look
+	_material.metallic = 1.0
+	_material.metallic_specular = 0.9
+	_material.roughness = 0.15
 	
-	# Emission for glow
+	# Glow effect
 	_material.emission_enabled = true
-	_material.emission = coin_color
-	_material.emission_energy_multiplier = emission_energy
+	_material.emission = Color(1.0, 0.7, 0.2)
+	_material.emission_energy_multiplier = 0.8
 	
-	# Metallic look
-	_material.metallic = 0.8
-	_material.roughness = 0.3
+	# Rim lighting effect
+	_material.rim_enabled = true
+	_material.rim = 0.4
+	_material.rim_tint = 0.3
 
 func _update_materials() -> void:
 	if _material:
-		_material.albedo_color = coin_color
-		_material.emission = coin_color
-		_material.emission_energy_multiplier = emission_energy
-		if coin_texture:
-			_material.albedo_texture = coin_texture
+		_material.albedo_color = Color(1.0, 0.8, 0.3)
+		_material.emission = Color(1.0, 0.7, 0.2)
+		_material.emission_energy_multiplier = 0.3
 
 func _create_collision() -> void:
 	var collision = CollisionShape3D.new()
@@ -160,8 +164,14 @@ func _on_body_entered(body: Node3D) -> void:
 	if _collected:
 		return
 	
-	# Check if it's the player
-	if body.is_in_group("player") or body.name == "Player":
+	if body.is_in_group("player") or body.name.contains("Player") or body.name.contains("Character"):
+		collect()
+
+func _on_area_entered(area: Area3D) -> void:
+	if _collected:
+		return
+	
+	if area.name == "CoinCollector":
 		collect()
 
 func collect() -> void:
