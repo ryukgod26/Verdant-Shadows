@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://b0o2ri7kkymp3"]
 
-[ext_resource type="PackedScene" uid="uid://cgtcvkxpvksfa" path="res://Scenes/UI/pause_menu.tscn" id="1_ds3o4"]
 [ext_resource type="Shader" uid="uid://cvd0x7lon1ur6" path="res://addons/sky_3d/shaders/SkyMaterial.gdshader" id="2_7l4mf"]
 [ext_resource type="Texture2D" uid="uid://cfqk60lpl5ljv" path="res://addons/sky_3d/assets/resources/SNoise.tres" id="3_xdwyp"]
 [ext_resource type="Texture2D" uid="uid://cecwdqjol0ckd" path="res://addons/sky_3d/assets/textures/noiseClouds.png" id="4_ahqd5"]
@@ -11,9 +10,8 @@
 [ext_resource type="Script" uid="uid://deo0gxkmk2ahd" path="res://addons/sky_3d/src/Sky3D.gd" id="9_3jpjc"]
 [ext_resource type="Script" uid="uid://b4tkplvh7fq40" path="res://addons/sky_3d/src/SkyDome.gd" id="10_x1q52"]
 [ext_resource type="Script" uid="uid://cjmkcj8hwm7ts" path="res://addons/sky_3d/src/TimeOfDay.gd" id="11_qmmh8"]
-[ext_resource type="Texture2D" uid="uid://54qa3nb4rxq5" path="res://assets/textures/grass_texture.jpg" id="12_xdwyp"]
-[ext_resource type="PackedScene" uid="uid://phs7xvjdl66m" path="res://Scenes/characters/player.tscn" id="13_ahqd5"]
-[ext_resource type="PackedScene" uid="uid://dqqq8x737yhoj" path="res://Scenes/Models/RuinStones/blue_stone.tscn" id="15_8u2a7"]
+[ext_resource type="PackedScene" uid="uid://phs7xvjdl66m" path="res://Scenes/character/player.tscn" id="13_ahqd5"]
+[ext_resource type="Script" uid="uid://bkumoriv4o5bx" path="res://Scripts/Path/path_manager.gd" id="13_dw2ve"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t7urq"]
 shader = ExtResource("2_7l4mf")
@@ -44,7 +42,7 @@ shader_parameter/moon_texture_flip_u = false
 shader_parameter/moon_texture_flip_v = false
 shader_parameter/moon_size = 0.07
 shader_parameter/atm_moon_mie_tint = Color(0.137255, 0.184314, 0.292196, 1)
-shader_parameter/atm_moon_mie_intensity = 0.5066774970293045
+shader_parameter/atm_moon_mie_intensity = 0.5066774761676789
 shader_parameter/atm_moon_partial_mie_phase = Vector3(0.36, 1.64, 1.6)
 shader_parameter/starmap_color = Color(0.709804, 0.709804, 0.709804, 0.854902)
 shader_parameter/starmap_texture = ExtResource("8_gqwak")
@@ -68,8 +66,8 @@ shader_parameter/cirrus_absorption = 2.0
 shader_parameter/cirrus_sky_tint_fade = 0.5
 shader_parameter/cirrus_size = 1.0
 shader_parameter/cirrus_uv = Vector2(0.16, 0.11)
-shader_parameter/cirrus_position1 = Vector2(0.97933924, 0.97933924)
-shader_parameter/cirrus_position2 = Vector2(0.97933924, 0.97933924)
+shader_parameter/cirrus_position1 = Vector2(0.0009899491, 0.0009899491)
+shader_parameter/cirrus_position2 = Vector2(0.0009899491, 0.0009899491)
 shader_parameter/cirrus_texture = ExtResource("3_xdwyp")
 shader_parameter/cumulus_visible = true
 shader_parameter/cumulus_intensity = 0.6
@@ -79,7 +77,7 @@ shader_parameter/cumulus_absorption = 2.0
 shader_parameter/cumulus_noise_freq = 2.7
 shader_parameter/cumulus_sky_tint_fade = 0.0
 shader_parameter/cumulus_size = 0.5
-shader_parameter/cumulus_position = Vector2(89.37347, 89.37347)
+shader_parameter/cumulus_position = Vector2(0.0049497476, 0.0049497476)
 shader_parameter/cumulus_texture = ExtResource("4_ahqd5")
 shader_parameter/cumulus_partial_mie_phase = Vector3(0.957564, 1.042436, 0.412)
 shader_parameter/cumulus_mie_intensity = 1.0
@@ -106,17 +104,6 @@ tonemap_mode = 3
 tonemap_white = 6.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_ht0kt"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_7l4mf"]
-size = Vector2(200, 200)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l4mf"]
-albedo_color = Color(1, 0.9995603, 1, 1)
-albedo_texture = ExtResource("12_xdwyp")
-uv1_scale = Vector3(200, 200, 200)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ahqd5"]
-data = PackedVector3Array(100, 0, 100, -100, 0, 100, 100, 0, -100, -100, 0, 100, -100, 0, -100, 100, 0, -100)
 
 [sub_resource type="Curve" id="Curve_dw2ve"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -184,8 +171,6 @@ rings = 8
 
 [node name="Game" type="Node3D" unique_id=961073756]
 
-[node name="PauseMenu" parent="." unique_id=1644742683 instance=ExtResource("1_ds3o4")]
-
 [node name="Sky3D" type="WorldEnvironment" parent="." unique_id=263926482]
 environment = SubResource("Environment_uuqr1")
 camera_attributes = SubResource("CameraAttributesPractical_ht0kt")
@@ -225,22 +210,8 @@ game_time_enabled = false
 dome_path = NodePath("../SkyDome")
 current_time = 19.26
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1579661787]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.005031824, -0.0015393496, -0.0028631687)
-mesh = SubResource("PlaneMesh_7l4mf")
-surface_material_override/0 = SubResource("StandardMaterial3D_7l4mf")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D" unique_id=314212576]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D" unique_id=411969236]
-shape = SubResource("ConcavePolygonShape3D_ahqd5")
-
 [node name="CharacterBody3D" parent="." unique_id=1741758508 instance=ExtResource("13_ahqd5")]
-
-[node name="RuinStones" type="Node3D" parent="." unique_id=188813267]
-
-[node name="BlueStone" parent="RuinStones" unique_id=661430774 instance=ExtResource("15_8u2a7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3126447, 0.51561826, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="FireFlies" type="GPUParticles3D" parent="." unique_id=755843833]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.603, 10, 0)
@@ -249,3 +220,8 @@ lifetime = 10.0
 visibility_aabb = AABB(-100, 0, -100, 200, 5, 200)
 process_material = SubResource("ParticleProcessMaterial_dw2ve")
 draw_pass_1 = SubResource("SphereMesh_8u2a7")
+
+[node name="PathManager" type="Node3D" parent="." unique_id=152491964 node_paths=PackedStringArray("player")]
+script = ExtResource("13_dw2ve")
+player = NodePath("../CharacterBody3D")
+chunks_ahead = 10
