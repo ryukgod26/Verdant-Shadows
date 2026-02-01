@@ -19,9 +19,14 @@ const COIN_SPAWN_CHANCE := 0.3  # 30% chance for coin stream
 const STREAM_LENGTH := 6  # Coins in a stream
 const STREAM_SPACING := 2.5  # Distance between coins in stream
 
+# Booster settings
+const BOOSTER_HEIGHT := 1.2
+const BOOSTER_SPAWN_CHANCE := 0.08  # 8% chance per chunk
+
 # Spawn config
 static var spawn_decorations := true
 static var spawn_coins := true
+static var spawn_boosters := true
 
 # Scripts (preloaded)
 const PathSegmentScript = preload("res://Scripts/Path/path_segment.gd")
@@ -30,12 +35,14 @@ const ShaderGrassScript = preload("res://Scripts/Decorations/shader_grass.gd")
 const SimpleRockScript = preload("res://Scripts/Decorations/simple_rock.gd")
 const SimpleBushScript = preload("res://Scripts/Decorations/simple_bush.gd")
 const CoinScript = preload("res://Scripts/Collectibles/coin.gd")
+const BoosterScript = preload("res://Scripts/Collectibles/booster.gd")
 
 # References
 var chunk_index := 0
 var path_segment: Node3D
 var decorations_container: Node3D
 var coins_container: Node3D
+var boosters_container: Node3D
 
 func _ready() -> void:
 	_create_path_segment()
@@ -45,6 +52,8 @@ func _ready() -> void:
 		_generate_decorations()
 	if spawn_coins:
 		_create_coins()
+	if spawn_boosters:
+		_create_boosters()
 
 func _create_path_segment() -> void:
 	path_segment = Node3D.new()
@@ -144,6 +153,25 @@ func _create_coins() -> void:
 func _spawn_coin(pos: Vector3) -> void:
 	var coin = CoinScript.create(pos)
 	coins_container.add_child(coin)
+
+func _create_boosters() -> void:
+	boosters_container = Node3D.new()
+	boosters_container.name = "Boosters"
+	add_child(boosters_container)
+	
+	var rng = RandomNumberGenerator.new()
+	rng.seed = hash(chunk_index * 999)
+	
+	if rng.randf() > BOOSTER_SPAWN_CHANCE:
+		return
+	
+	# Spawn booster in random lane
+	var lane = rng.randi_range(-1, 1)
+	var x_pos = lane * LANE_WIDTH
+	var z_pos = rng.randf_range(-5.0, -CHUNK_LENGTH + 5.0)
+	
+	var booster = BoosterScript.create(Vector3(x_pos, BOOSTER_HEIGHT, z_pos))
+	boosters_container.add_child(booster)
 
 # === DECORATIONS CONTROL ===
 func _hide_decorations() -> void:

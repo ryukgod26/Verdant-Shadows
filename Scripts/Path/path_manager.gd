@@ -27,6 +27,8 @@ var next_spawn_z := 0.0
 const PathChunkScript = preload("res://Scripts/Path/path_chunk.gd")
 const CHUNK_LENGTH := 20.0
 
+var pre_boost_light_mode := 0  # Store mode before boost
+
 func _ready() -> void:
 	if not player:
 		push_error("PathManager: No player assigned!")
@@ -36,8 +38,21 @@ func _ready() -> void:
 	PathChunk.spawn_coins = spawn_coins
 	PathChunk.spawn_decorations = spawn_decorations
 	
+	# Connect to player boost signals
+	if player.has_signal("boost_started"):
+		player.boost_started.connect(_on_boost_started)
+	if player.has_signal("boost_ended"):
+		player.boost_ended.connect(_on_boost_ended)
+	
 	for i in range(chunks_ahead + chunks_behind):
 		_spawn_chunk()
+
+func _on_boost_started() -> void:
+	pre_boost_light_mode = current_light_mode
+	set_light_mode(2)  # BOOST mode
+
+func _on_boost_ended() -> void:
+	set_light_mode(pre_boost_light_mode)
 
 func _process(_delta: float) -> void:
 	if not player:
@@ -53,9 +68,9 @@ func _spawn_chunk() -> void:
 	var chunk = Node3D.new()
 	chunk.set_script(PathChunkScript)
 	chunk.chunk_index = next_chunk_index
-	chunk.global_position = Vector3(0, 0, -next_spawn_z)
 	
 	add_child(chunk)
+	chunk.global_position = Vector3(0, 0, -next_spawn_z)
 	active_chunks.append(chunk)
 	chunk.call_deferred("set_light_mode", current_light_mode)
 	

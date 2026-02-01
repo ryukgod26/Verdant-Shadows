@@ -4,8 +4,6 @@
 [ext_resource type="FontFile" uid="uid://dj6nbyg73saln" path="res://assets/fonts/tropi-land-font.ttf" id="2_4pqbp"]
 [ext_resource type="Script" uid="uid://ngrseg7yvjs2" path="res://Scripts/UI/button.gd" id="2_i2xx2"]
 [ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_o14dv"]
-[ext_resource type="Texture2D" uid="uid://byo6an22asmi4" path="res://assets/icons/settings.svg" id="4_u7lva"]
-[ext_resource type="Texture2D" uid="uid://doksde63j88d5" path="res://assets/icons/exit.svg" id="5_mrfpk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wsvm"]
 content_margin_left = 16.0
@@ -98,22 +96,6 @@ script = ExtResource("2_i2xx2")
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="Options" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=868155071]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
-mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 32
-theme_override_fonts/font = ExtResource("2_o14dv")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
-icon = ExtResource("4_u7lva")
-icon_alignment = 1
-text_direction = 1
-script = ExtResource("2_i2xx2")
-
 [node name="Quit" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=1134322276]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -125,16 +107,13 @@ theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
 theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
-icon = ExtResource("5_mrfpk")
+text = "Quit"
 icon_alignment = 1
 script = ExtResource("2_i2xx2")
 
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_exited"]
 [connection signal="pressed" from="Control/Container/ButtonsContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="Control/Container/ButtonsContainer/HBoxContainer/Options" method="_on_button_mouse_exited"]
-[connection signal="pressed" from="Control/Container/ButtonsContainer/HBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
 [connection signal="pressed" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]

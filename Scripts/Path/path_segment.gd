@@ -7,13 +7,15 @@ const PATH_WIDTH := 6.0
 const EDGE_HEIGHT := 0.3
 
 # === LIGHTING MODES ===
-enum LightMode { WARM, COOL }
+enum LightMode { WARM, COOL, BOOST }
 var current_mode := LightMode.WARM
 
 # Light strip colors
 const WARM_COLOR := Color(1.0, 0.7, 0.4)      # Dawn/evening - orange glow
 const COOL_COLOR := Color(0.4, 0.6, 1.0)      # Midnight - blue glow
+const BOOST_COLOR := Color(0.2, 0.7, 1.0)     # Speed boost - bright cyan
 const EMISSION_ENERGY := 2.0                   # Glow intensity
+const BOOST_EMISSION := 5.0                    # Intense boost glow
 
 # Strip dimensions
 const STRIP_WIDTH := 0.15
@@ -163,15 +165,27 @@ func _create_emissive_material() -> StandardMaterial3D:
 
 func set_light_mode(mode: LightMode) -> void:
 	current_mode = mode
-	var color = WARM_COLOR if mode == LightMode.WARM else COOL_COLOR
+	var color: Color
+	var energy: float = EMISSION_ENERGY
+	
+	match mode:
+		LightMode.WARM:
+			color = WARM_COLOR
+		LightMode.COOL:
+			color = COOL_COLOR
+		LightMode.BOOST:
+			color = BOOST_COLOR
+			energy = BOOST_EMISSION
 	
 	# Update strip emissions
 	if left_strip_material:
 		left_strip_material.emission = color
 		left_strip_material.albedo_color = color.darkened(0.5)
+		left_strip_material.emission_energy_multiplier = energy
 	if right_strip_material:
 		right_strip_material.emission = color
 		right_strip_material.albedo_color = color.darkened(0.5)
+		right_strip_material.emission_energy_multiplier = energy
 
 func set_emission_energy(energy: float) -> void:
 	if left_strip_material:
@@ -184,7 +198,18 @@ func transition_to_mode(mode: LightMode, duration: float = 1.0) -> void:
 	if mode == current_mode:
 		return
 	
-	var target_color = WARM_COLOR if mode == LightMode.WARM else COOL_COLOR
+	var target_color: Color
+	var target_energy: float = EMISSION_ENERGY
+	
+	match mode:
+		LightMode.WARM:
+			target_color = WARM_COLOR
+		LightMode.COOL:
+			target_color = COOL_COLOR
+		LightMode.BOOST:
+			target_color = BOOST_COLOR
+			target_energy = BOOST_EMISSION
+	
 	var target_albedo = target_color.darkened(0.5)
 	var tween = create_tween()
 	tween.set_parallel(true)
@@ -193,8 +218,10 @@ func transition_to_mode(mode: LightMode, duration: float = 1.0) -> void:
 	if left_strip_material:
 		tween.tween_property(left_strip_material, "emission", target_color, duration)
 		tween.tween_property(left_strip_material, "albedo_color", target_albedo, duration)
+		tween.tween_property(left_strip_material, "emission_energy_multiplier", target_energy, duration)
 	if right_strip_material:
 		tween.tween_property(right_strip_material, "emission", target_color, duration)
 		tween.tween_property(right_strip_material, "albedo_color", target_albedo, duration)
+		tween.tween_property(right_strip_material, "emission_energy_multiplier", target_energy, duration)
 	
 	current_mode = mode

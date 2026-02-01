@@ -5,6 +5,10 @@ extends CharacterBody3D
 @export var lane_switch_speed := 20.0
 @export var jump_velocity := 5.0
 
+# === BOOST SETTINGS ===
+@export var boost_multiplier := 7.0
+@export var boost_duration := 5.0
+
 # === LANE SYSTEM ===
 @export var lane_width := 2.0
 var current_lane := 0  # -1, 0, 1
@@ -17,6 +21,8 @@ var current_lane := 0  # -1, 0, 1
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_running := true
 var is_dead := false
+var is_boosting := false
+var boost_timer := 0.0
 var distance_traveled := 0.0
 var coins_collected := 0
 
@@ -30,17 +36,84 @@ var coins_collected := 0
 signal died
 signal distance_changed(meters: float)
 signal coin_collected(total: int)
+signal boost_started
+signal boost_ended
+
+# Motion blur
+var motion_blur_rect: ColorRect
+var motion_blur_material: ShaderMaterial
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	_start_run_animation()
 	_setup_coin_collector()
+	_setup_motion_blur()
 	
 	if hud:
 		if hud.has_method("update_distance"):
 			distance_changed.connect(hud.update_distance)
 		if hud.has_method("update_coins"):
 			coin_collected.connect(hud.update_coins)
+	
+	boost_started.connect(_on_boost_started)
+	boost_ended.connect(_on_boost_ended)
+
+func _setup_motion_blur() -> void:
+	# HUD layer above motion blur
+	var hud_layer = CanvasLayer.new()
+	hud_layer.name = "HUDLayer"
+	hud_layer.layer = 20
+	add_child(hud_layer)
+	
+	if hud:
+		hud.get_parent().remove_child(hud)
+		hud_layer.add_child(hud)
+	
+	# Motion blur layer
+	var blur_layer = CanvasLayer.new()
+	blur_layer.name = "MotionBlurLayer"
+	blur_layer.layer = 10
+	add_child(blur_layer)
+	
+	motion_blur_rect = ColorRect.new()
+	motion_blur_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	motion_blur_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	var shader = load("res://Shaders/motion_blur.gdshader")
+	motion_blur_material = ShaderMaterial.new()
+	motion_blur_material.shader = shader
+	motion_blur_material.set_shader_parameter("blur_amount", 0.0)
+	
+	motion_blur_rect.material = motion_blur_material
+	blur_layer.add_child(motion_blur_rect)
+
+func _on_boost_started() -> void:
+	if motion_blur_material:
+		var tween = create_tween()
+		tween.tween_method(_set_blur_amount, 0.0, 1.0, 0.3)
+	
+	if hud and hud.has_method("show_boost_bar"):
+		hud.show_boost_bar(boost_duration)
+	
+	# Speed up animation
+	if animation_player:
+		animation_player.speed_scale = 1.4
+
+func _on_boost_ended() -> void:
+	if motion_blur_material:
+		var tween = create_tween()
+		tween.tween_method(_set_blur_amount, 1.0, 0.0, 0.5)
+	
+	if hud and hud.has_method("hide_boost_bar"):
+		hud.hide_boost_bar()
+	
+	# Normal animation speed
+	if animation_player:
+		animation_player.speed_scale = 1.0
+
+func _set_blur_amount(val: float) -> void:
+	if motion_blur_material:
+		motion_blur_material.set_shader_parameter("blur_amount", val)
 
 func _setup_coin_collector() -> void:
 	var collector = Area3D.new()
@@ -63,6 +136,19 @@ func _on_coin_touched(area: Area3D) -> void:
 		coins_collected += 1
 		coin_collected.emit(coins_collected)
 		area.queue_free()
+	elif area.has_meta("is_booster"):
+		_activate_boost()
+		area.queue_free()
+
+func _activate_boost() -> void:
+	if is_boosting:
+		# Extend boost time
+		boost_timer = boost_duration
+		return
+	
+	is_boosting = true
+	boost_timer = boost_duration
+	boost_started.emit()
 
 # =========================
 # ANIMATION
@@ -116,12 +202,24 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
+	# Boost timer
+	if is_boosting:
+		boost_timer -= delta
+		
+		if hud and hud.has_method("update_boost_bar"):
+			hud.update_boost_bar(boost_timer)
+		
+		if boost_timer <= 0:
+			is_boosting = false
+			boost_ended.emit()
+	
 	if is_running:
-		distance_traveled += run_speed * delta
+		var current_speed = run_speed * (boost_multiplier if is_boosting else 1.0)
+		distance_traveled += current_speed * delta
 		distance_changed.emit(distance_traveled)
 		
 		# Forward movement (always -Z)
-		velocity.z = -run_speed
+		velocity.z = -current_speed
 		
 		# Lane movement
 		var target_x = current_lane * lane_width
