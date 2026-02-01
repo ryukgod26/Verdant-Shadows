@@ -54,7 +54,7 @@ func _create_ui():
 	coin_container.anchor_left = 0
 	coin_container.anchor_top = 0
 	coin_container.offset_left = 20
-	coin_container.offset_top = 20
+	coin_container.offset_top = -5
 	add_child(coin_container)
 	
 	var coin_icon = Label.new()

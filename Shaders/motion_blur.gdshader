@@ -16,8 +16,8 @@ void fragment() {
 	vec2 center_offset = uv - blur_center;
 	float dist = length(center_offset);
 	
-	// Edge warp - barrel distortion at edges
-	float edge_factor = smoothstep(0.3, 0.8, dist);
+	// Edge warp - barrel distortion at edges only (protect center/pathway)
+	float edge_factor = smoothstep(0.45, 0.85, dist);
 	float warp = edge_factor * warp_strength * blur_amount;
 	
 	// Animated wave warp

@@ -238,7 +238,7 @@ func _physics_process(delta: float) -> void:
 # =========================
 func _update_camera(delta: float) -> void:
 	var cam_target = global_position + Vector3(0, camera_height, camera_distance)
-	camera_arm.global_position = camera_arm.global_position.lerp(cam_target, 10.0 * delta)
+	camera_arm.global_position = camera_arm.global_position.lerp(cam_target, 4.0 * delta)
 	
 	var look_target = global_position + Vector3(0, 0.5, -5.0)
 	camera.look_at(look_target)
