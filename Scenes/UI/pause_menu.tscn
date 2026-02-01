@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://dpausemenu001"]
+
+[ext_resource type="Script" path="res://Scripts/UI/pause_menu.gd" id="1_pause"]
+[ext_resource type="Script" path="res://Scripts/UI/button.gd" id="2_btn"]
+[ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="3_font"]
+[ext_resource type="FontFile" uid="uid://crwdrhq86a5t5" path="res://assets/fonts/melon-pop.ttf" id="4_melon"]
+[ext_resource type="Shader" path="res://Shaders/blur_overlay.gdshader" id="5_blur"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blur"]
+shader = ExtResource("5_blur")
+shader_parameter/blur_amount = 3.0
+shader_parameter/darken = 0.5
+shader_parameter/tint_color = Color(0.03, 0.06, 0.04, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.12, 0.22, 0.15, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.18, 0.35, 0.24, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.08, 0.15, 0.1, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.12, 0.22, 0.15, 0.85)
+
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_pause")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="BlurBackground" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_blur")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Container" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 32
+
+[node name="Title" type="Label" parent="Control/Container"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.95, 0.88, 1.0)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 48
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="StatsContainer" type="HBoxContainer" parent="Control/Container"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/separation = 64
+
+[node name="CoinsBox" type="VBoxContainer" parent="Control/Container/StatsContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="CoinsTitle" type="Label" parent="Control/Container/StatsContainer/CoinsBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.65, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "COINS"
+horizontal_alignment = 1
+
+[node name="CoinsLabel" type="Label" parent="Control/Container/StatsContainer/CoinsBox" unique_name_in_owner=true]
+layout_mode = 2
+theme_override_colors/font_color = Color(1.0, 0.85, 0.3, 1.0)
+theme_override_fonts/font = ExtResource("4_melon")
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+
+[node name="DistanceBox" type="VBoxContainer" parent="Control/Container/StatsContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="DistanceTitle" type="Label" parent="Control/Container/StatsContainer/DistanceBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.7, 0.65, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "DISTANCE"
+horizontal_alignment = 1
+
+[node name="DistanceLabel" type="Label" parent="Control/Container/StatsContainer/DistanceBox" unique_name_in_owner=true]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 1.0, 0.95, 1.0)
+theme_override_fonts/font = ExtResource("4_melon")
+theme_override_font_sizes/font_size = 36
+text = "0 m"
+horizontal_alignment = 1
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Control/Container"]
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Resume" type="Button" parent="Control/Container/ButtonsContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 0.85, 1.0)
+theme_override_colors/font_hover_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_colors/font_pressed_color = Color(0.6, 0.75, 0.65, 1.0)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+text = "Resume"
+script = ExtResource("2_btn")
+
+[node name="Quit" type="Button" parent="Control/Container/ButtonsContainer"]
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 0.85, 1.0)
+theme_override_colors/font_hover_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_colors/font_pressed_color = Color(0.6, 0.75, 0.65, 1.0)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+text = "Quit to Menu"
+script = ExtResource("2_btn")
+
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Resume" to="Control/Container/ButtonsContainer/Resume" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Resume" to="Control/Container/ButtonsContainer/Resume" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Quit" to="Control/Container/ButtonsContainer/Quit" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Quit" to="Control/Container/ButtonsContainer/Quit" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/Quit" to="." method="_on_quit_pressed"]

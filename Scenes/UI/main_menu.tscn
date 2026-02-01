@@ -4,28 +4,42 @@
 [ext_resource type="FontFile" uid="uid://dj6nbyg73saln" path="res://assets/fonts/tropi-land-font.ttf" id="2_4pqbp"]
 [ext_resource type="Script" uid="uid://ngrseg7yvjs2" path="res://Scripts/UI/button.gd" id="2_i2xx2"]
 [ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_o14dv"]
+[ext_resource type="Shader" path="res://Shaders/diamond_pattern.gdshader" id="5_diamond"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5wsvm"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(1, 1, 1, 0.10300001)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_diamond"]
+shader = ExtResource("5_diamond")
+shader_parameter/bg_color = Color(0.035, 0.08, 0.055, 1)
+shader_parameter/diamond_color = Color(0.12, 0.28, 0.18, 1)
+shader_parameter/diamond_size = 50.0
+shader_parameter/line_thickness = 1.8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i2xx2"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.21518216, 0.21518219, 0.21518207, 1)
-corner_radius_top_left = 30
-corner_radius_top_right = 30
-corner_radius_bottom_right = 30
-corner_radius_bottom_left = 30
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_normal"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.12, 0.22, 0.15, 0.85)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hover"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.18, 0.35, 0.24, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pressed"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.08, 0.15, 0.1, 0.95)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_focus"]
+content_margin_left = 32.0
+content_margin_top = 14.0
+content_margin_right = 32.0
+content_margin_bottom = 14.0
+bg_color = Color(0.12, 0.22, 0.15, 0.85)
 
 [node name="MainMenu" type="CanvasLayer" unique_id=266428279]
 script = ExtResource("1_5wsvm")
@@ -40,14 +54,14 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ColorRect" type="ColorRect" parent="Control" unique_id=1200225615]
+[node name="Background" type="ColorRect" parent="Control" unique_id=1200225615]
+material = SubResource("ShaderMaterial_diamond")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.07243756, 0.13886148, 0.07817242, 1)
 
 [node name="Container" type="VBoxContainer" parent="Control" unique_id=1428482812]
 layout_mode = 1
@@ -56,24 +70,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -160.0
-offset_top = -112.5
-offset_right = 160.0
-offset_bottom = 112.5
+offset_left = -250.0
+offset_top = -180.0
+offset_right = 250.0
+offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 64
+theme_override_constants/separation = 48
 metadata/_edit_use_anchors_ = true
 
 [node name="Title" type="Label" parent="Control/Container" unique_id=745582703]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 1.0, 0.9, 1.0)
+theme_override_colors/font_shadow_color = Color(0.0, 0.1, 0.05, 0.5)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
 theme_override_fonts/font = ExtResource("2_4pqbp")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 72
 text = "Verdant Shadows"
 horizontal_alignment = 1
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="Control/Container" unique_id=2127791125]
-custom_minimum_size = Vector2(420, 0)
+custom_minimum_size = Vector2(320, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -81,39 +99,63 @@ theme_override_constants/separation = 16
 alignment = 1
 
 [node name="Start" type="Button" parent="Control/Container/ButtonsContainer" unique_id=1638619033]
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_default_cursor_shape = 2
+theme_override_colors/font_color = Color(0.9, 1.0, 0.92, 1.0)
+theme_override_colors/font_hover_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_colors/font_pressed_color = Color(0.7, 0.85, 0.75, 1.0)
 theme_override_fonts/font = ExtResource("2_o14dv")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
-text = "START"
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
+text = "Start Game"
 script = ExtResource("2_i2xx2")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/Container/ButtonsContainer" unique_id=1695924961]
+[node name="Quit" type="Button" parent="Control/Container/ButtonsContainer" unique_id=1134322276]
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="Quit" type="Button" parent="Control/Container/ButtonsContainer/HBoxContainer" unique_id=1134322276]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_default_cursor_shape = 2
-theme_override_constants/icon_max_width = 32
+theme_override_colors/font_color = Color(0.9, 1.0, 0.92, 1.0)
+theme_override_colors/font_hover_color = Color(1.0, 1.0, 1.0, 1.0)
+theme_override_colors/font_pressed_color = Color(0.7, 0.85, 0.75, 1.0)
 theme_override_fonts/font = ExtResource("2_o14dv")
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxFlat_5wsvm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_i2xx2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_i2xx2")
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_normal")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_focus")
 text = "Quit"
-icon_alignment = 1
 script = ExtResource("2_i2xx2")
+
+[node name="VersionLabel" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -40.0
+offset_right = -16.0
+offset_bottom = -12.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.65, 0.55, 0.4)
+theme_override_font_sizes/font_size = 14
+text = "v0.2.0"
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_entered"]
 [connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Start" to="Control/Container/ButtonsContainer/Start" method="_on_button_mouse_exited"]
 [connection signal="pressed" from="Control/Container/ButtonsContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="Control/Container/ButtonsContainer/HBoxContainer/Quit" method="_on_button_mouse_exited"]
-[connection signal="pressed" from="Control/Container/ButtonsContainer/HBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="mouse_entered" from="Control/Container/ButtonsContainer/Quit" to="Control/Container/ButtonsContainer/Quit" method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="Control/Container/ButtonsContainer/Quit" to="Control/Container/ButtonsContainer/Quit" method="_on_button_mouse_exited"]
+[connection signal="pressed" from="Control/Container/ButtonsContainer/Quit" to="." method="_on_quit_pressed"]

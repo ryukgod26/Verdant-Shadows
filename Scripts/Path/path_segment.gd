@@ -32,7 +32,7 @@ var right_strip_material: StandardMaterial3D
 # Materials (shared for geometry)
 static var path_material: StandardMaterial3D
 static var edge_material: StandardMaterial3D
-static var ground_material: StandardMaterial3D
+static var ground_material: ShaderMaterial
 static var materials_initialized := false
 
 func _ready() -> void:
@@ -56,10 +56,17 @@ static func _init_materials() -> void:
 	edge_material.albedo_color = Color(0.25, 0.22, 0.18)
 	edge_material.roughness = 0.85
 	
-	# Ground - solid dark earth
-	ground_material = StandardMaterial3D.new()
-	ground_material.albedo_color = Color(0.12, 0.1, 0.06)
-	ground_material.roughness = 1.0
+	# Ground - forest floor shader with dirt, moss, leaves
+	var floor_shader = load("res://Shaders/forest_floor.gdshader")
+	ground_material = ShaderMaterial.new()
+	ground_material.shader = floor_shader
+	ground_material.set_shader_parameter("dirt_color", Color(0.18, 0.12, 0.08))
+	ground_material.set_shader_parameter("dark_dirt", Color(0.1, 0.07, 0.04))
+	ground_material.set_shader_parameter("moss_color", Color(0.12, 0.22, 0.08))
+	ground_material.set_shader_parameter("leaf_color", Color(0.25, 0.15, 0.08))
+	ground_material.set_shader_parameter("noise_scale", 12.0)
+	ground_material.set_shader_parameter("moss_amount", 0.3)
+	ground_material.set_shader_parameter("leaf_amount", 0.2)
 	
 	materials_initialized = true
 

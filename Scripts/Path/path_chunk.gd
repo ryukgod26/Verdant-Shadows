@@ -9,9 +9,9 @@ const LANE_WIDTH := 2.0  # Width of each lane
 
 # Decoration density per chunk (per side)
 const TREES_PER_SIDE := 8
-const GRASS_PER_SIDE := 25
-const ROCKS_PER_SIDE := 4
-const BUSHES_PER_SIDE := 8
+const GRASS_PATCHES_PER_SIDE := 4  # Each patch has 500-1200 grass blades
+const ROCKS_PER_SIDE := 6
+const BUSHES_PER_SIDE := 12
 
 # Coin settings
 const COIN_HEIGHT := 1.0
@@ -77,7 +77,7 @@ func _create_forest() -> void:
 	forest.set_script(MultiMeshForestScript)
 	forest.name = "Forest"
 	add_child(forest)
-	forest.setup_forest(chunk_index, CHUNK_LENGTH, PATH_WIDTH, DECORATION_WIDTH, TREES_PER_SIDE, GRASS_PER_SIDE, ROCKS_PER_SIDE, BUSHES_PER_SIDE)
+	forest.setup_forest(chunk_index, CHUNK_LENGTH, PATH_WIDTH, DECORATION_WIDTH, TREES_PER_SIDE, GRASS_PATCHES_PER_SIDE, ROCKS_PER_SIDE, BUSHES_PER_SIDE)
 
 func _create_coins() -> void:
 	coins_container = Node3D.new()

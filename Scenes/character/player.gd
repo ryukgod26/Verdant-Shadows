@@ -33,6 +33,11 @@ var coins_collected := 0
 @onready var animation_player: AnimationPlayer = _find_animation_player(model)
 @onready var hud: Control = $HUD
 
+# Animation blending
+var animation_tree: AnimationTree
+var anim_state_machine: AnimationNodeStateMachinePlayback
+const BLEND_TIME := 0.2
+
 signal died
 signal distance_changed(meters: float)
 signal coin_collected(total: int)
@@ -44,8 +49,9 @@ var motion_blur_rect: ColorRect
 var motion_blur_material: ShaderMaterial
 
 func _ready() -> void:
+	add_to_group("player")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	_start_run_animation()
+	_setup_animation_tree()
 	_setup_coin_collector()
 	_setup_motion_blur()
 	
@@ -153,16 +159,76 @@ func _activate_boost() -> void:
 # =========================
 # ANIMATION
 # =========================
-func _start_run_animation() -> void:
+func _setup_animation_tree() -> void:
 	if not animation_player:
 		return
-	if animation_player.has_animation("mixamo_com"):
-		animation_player.play("mixamo_com")
-		return
-	for anim in ["Run", "run", "Running", "Take 001"]:
+	
+	# Load and add jump animation to the AnimationPlayer
+	var jump_anim = load("res://assets/jump_animation/jump_animation.anim")
+	if jump_anim:
+		var lib = animation_player.get_animation_library("")
+		if lib and not lib.has_animation("jump"):
+			lib.add_animation("jump", jump_anim)
+	
+	# Find run animation name
+	var run_anim_name := ""
+	for anim in ["mixamo_com", "Run", "run", "Running", "Take 001"]:
 		if animation_player.has_animation(anim):
-			animation_player.play(anim)
-			return
+			run_anim_name = anim
+			break
+	
+	if run_anim_name.is_empty():
+		return
+	
+	# Create AnimationTree with state machine for blending
+	animation_tree = AnimationTree.new()
+	animation_tree.name = "AnimationTree"
+	
+	# Build state machine
+	var state_machine = AnimationNodeStateMachine.new()
+	
+	# Add run animation node
+	var run_node = AnimationNodeAnimation.new()
+	run_node.animation = run_anim_name
+	state_machine.add_node("run", run_node, Vector2(0, 0))
+	
+	# Add jump animation node
+	var jump_node = AnimationNodeAnimation.new()
+	jump_node.animation = "jump"
+	state_machine.add_node("jump", jump_node, Vector2(200, 0))
+	
+	# Create transitions with blending
+	var run_to_jump = AnimationNodeStateMachineTransition.new()
+	run_to_jump.xfade_time = BLEND_TIME
+	run_to_jump.switch_mode = AnimationNodeStateMachineTransition.SWITCH_MODE_IMMEDIATE
+	state_machine.add_transition("run", "jump", run_to_jump)
+	
+	var jump_to_run = AnimationNodeStateMachineTransition.new()
+	jump_to_run.xfade_time = BLEND_TIME
+	jump_to_run.switch_mode = AnimationNodeStateMachineTransition.SWITCH_MODE_AT_END
+	state_machine.add_transition("jump", "run", jump_to_run)
+	
+	# Set start node
+	state_machine.set_graph_offset(Vector2(-100, -50))
+	
+	animation_tree.tree_root = state_machine
+	animation_tree.anim_player = animation_player.get_path()
+	animation_tree.active = true
+	
+	model.add_child(animation_tree)
+	
+	# Get playback control
+	anim_state_machine = animation_tree.get("parameters/playback")
+	if anim_state_machine:
+		anim_state_machine.travel("run")
+
+func _play_jump_animation() -> void:
+	if anim_state_machine:
+		anim_state_machine.travel("jump")
+
+func _play_run_animation() -> void:
+	if anim_state_machine:
+		anim_state_machine.travel("run")
 
 func _find_animation_player(node: Node) -> AnimationPlayer:
 	if node is AnimationPlayer:
@@ -188,6 +254,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("ui_accept") and is_on_floor():
 		velocity.y = jump_velocity
+		_play_jump_animation()
 	
 	if event.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
@@ -195,12 +262,21 @@ func _unhandled_input(event: InputEvent) -> void:
 # =========================
 # PHYSICS
 # =========================
+var was_on_floor := true
+
 func _physics_process(delta: float) -> void:
 	if is_dead:
 		return
 	
-	if not is_on_floor():
+	var on_floor = is_on_floor()
+	
+	if not on_floor:
 		velocity.y -= gravity * delta
+	
+	# Detect landing - transition back to run
+	if on_floor and not was_on_floor:
+		_play_run_animation()
+	was_on_floor = on_floor
 	
 	# Boost timer
 	if is_boosting:
@@ -260,3 +336,5 @@ func respawn() -> void:
 	coins_collected = 0
 	global_position = Vector3(0, 1, 0)
 	velocity = Vector3.ZERO
+	was_on_floor = true
+	_play_run_animation()

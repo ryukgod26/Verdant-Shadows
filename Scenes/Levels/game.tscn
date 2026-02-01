@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://phs7xvjdl66m" path="res://Scenes/character/player.tscn" id="13_ahqd5"]
 [ext_resource type="Script" uid="uid://bkumoriv4o5bx" path="res://Scripts/Path/path_manager.gd" id="13_dw2ve"]
 [ext_resource type="Script" uid="uid://ctfdbyivh3qos" path="res://Scripts/UI/fps_counter.gd" id="14_fps"]
+[ext_resource type="PackedScene" uid="uid://dpausemenu001" path="res://Scenes/UI/pause_menu.tscn" id="15_pause"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xdwyp"]
 shader = ExtResource("2_7l4mf")
@@ -164,3 +165,5 @@ light_energy = 0.2
 
 [node name="FPSCounter" type="Label" parent="UI" unique_id=589774178]
 script = ExtResource("14_fps")
+
+[node name="PauseMenu" parent="." instance=ExtResource("15_pause")]
