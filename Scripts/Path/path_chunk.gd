@@ -5,6 +5,7 @@ class_name PathChunk
 const CHUNK_LENGTH := 20.0
 const PATH_WIDTH := 6.0
 const DECORATION_WIDTH := 30.0  # Doubled from 15 for larger forest area
+const LANE_WIDTH := 2.0  # Width of each lane
 
 # Decoration density per chunk (per side) - increased for larger forest
 const TREES_PER_SIDE := 12
@@ -12,22 +13,33 @@ const GRASS_PER_SIDE := 20
 const ROCKS_PER_SIDE := 5
 const BUSHES_PER_SIDE := 10
 
+# Coin settings
+const COIN_ROWS_PER_CHUNK := 4  # How many rows of coins per chunk
+const COIN_HEIGHT := 1.0  # Height above ground
+
 # Scripts (preloaded)
 const PathSegmentScript = preload("res://Scripts/Path/path_segment.gd")
 const JungleTreeScript = preload("res://Scripts/Decorations/jungle_tree.gd")
 const GrassClumpScript = preload("res://Scripts/Decorations/grass_clump.gd")
 const JungleRockScript = preload("res://Scripts/Decorations/jungle_rock.gd")
 const JungleBushScript = preload("res://Scripts/Decorations/jungle_bush.gd")
+const CoinScript = preload("res://Scripts/Collectibles/coin.gd")
 
 # References
 var chunk_index := 0
 var path_segment: Node3D
 var decorations_container: Node3D
+var coins_container: Node3D
+
+# Coin pattern - set by PathManager
+static var spawn_coins := true
 
 func _ready() -> void:
 	_create_path_segment()
 	_create_decorations_container()
 	_generate_decorations()
+	if spawn_coins:
+		_create_coins()
 
 func _create_path_segment() -> void:
 	path_segment = Node3D.new()
@@ -82,6 +94,41 @@ func _get_decoration_position(rng: RandomNumberGenerator, base_x: float, side: i
 	var x = base_x + side * rng.randf_range(min_dist, max_dist)
 	var z = rng.randf_range(0, -CHUNK_LENGTH)  # Negative Z is forward
 	return Vector3(x, 0, z)
+
+func _create_coins() -> void:
+	coins_container = Node3D.new()
+	coins_container.name = "Coins"
+	add_child(coins_container)
+	
+	var rng = RandomNumberGenerator.new()
+	rng.seed = hash(chunk_index * 777)  # Different seed than decorations
+	
+	var row_spacing = CHUNK_LENGTH / (COIN_ROWS_PER_CHUNK + 1)
+	
+	for row in range(COIN_ROWS_PER_CHUNK):
+		var z_pos = -row_spacing * (row + 1)
+		
+		# Randomly choose a coin pattern for this row
+		var pattern = rng.randi() % 5
+		
+		match pattern:
+			0:  # Single coin in center
+				_spawn_coin(Vector3(0, COIN_HEIGHT, z_pos))
+			1:  # Single coin on left
+				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
+			2:  # Single coin on right
+				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
+			3:  # All three lanes
+				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
+				_spawn_coin(Vector3(0, COIN_HEIGHT, z_pos))
+				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
+			4:  # Two coins (left + right)
+				_spawn_coin(Vector3(-LANE_WIDTH, COIN_HEIGHT, z_pos))
+				_spawn_coin(Vector3(LANE_WIDTH, COIN_HEIGHT, z_pos))
+
+func _spawn_coin(pos: Vector3) -> void:
+	var coin = CoinScript.create(pos)
+	coins_container.add_child(coin)
 
 # === LIGHTING CONTROL ===
 func set_light_mode(mode: int) -> void:
