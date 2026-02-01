@@ -10,6 +10,8 @@ height = 1.8
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=1741758508]
 script = ExtResource("1_mn5ak")
+camera_distance = 4.0
+camera_height = 3.0
 
 [node name="BeanCollisionShape" type="CollisionShape3D" parent="." unique_id=2073577929]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -0.075829625)

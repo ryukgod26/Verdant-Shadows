@@ -67,10 +67,6 @@ Pause={
 ]
 }
 
-[internationalization]
-
-locale/translations_pot_files=PackedStringArray("res://Scenes/IntroScene/intro.dialogue")
-
 [physics]
 
 3d/physics_engine="Jolt Physics"
