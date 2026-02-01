@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://bvkenhdqoijfx"]
 
 [ext_resource type="Script" uid="uid://cwey6pqof5r0" path="res://Scripts/UI/options.gd" id="1_sncl2"]
+[ext_resource type="FontFile" uid="uid://0bbkdpjtyaxt" path="res://assets/fonts/nexa-font/Nexa-Heavy.ttf" id="2_35y0k"]
 [ext_resource type="Script" uid="uid://dxj2syuht5d4c" path="res://Scripts/UI/HSlider.gd" id="2_jt3no"]
+[ext_resource type="FontFile" uid="uid://bh7mocnywvqh" path="res://assets/fonts/melon-pop.ttf" id="3_0s3wi"]
 
 [node name="Options" type="CanvasLayer" unique_id=834117118]
 script = ExtResource("1_sncl2")
@@ -12,16 +14,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_35y0k")
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 drag_to_rearrange_enabled = true
 
 [node name="Video" type="VBoxContainer" parent="TabContainer" unique_id=33617144]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="Fovlbl" type="Label" parent="TabContainer/Video" unique_id=303664901]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0s3wi")
 text = "FOV(Field Of View)"
 horizontal_alignment = 1
 
@@ -31,6 +36,7 @@ script = ExtResource("2_jt3no")
 
 [node name="Sensitivitylbl" type="Label" parent="TabContainer/Video" unique_id=891846769]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0s3wi")
 text = "Sensitivity"
 horizontal_alignment = 1
 
@@ -39,12 +45,12 @@ layout_mode = 2
 script = ExtResource("2_jt3no")
 
 [node name="Audio" type="VBoxContainer" parent="TabContainer" unique_id=620300264]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="MasterVollbl" type="Label" parent="TabContainer/Audio" unique_id=1448402623]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0s3wi")
 text = "Master Volume"
 horizontal_alignment = 1
 
@@ -54,6 +60,7 @@ script = ExtResource("2_jt3no")
 
 [node name="MusicVollbl" type="Label" parent="TabContainer/Audio" unique_id=265235648]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0s3wi")
 text = "Music Volume"
 horizontal_alignment = 1
 
@@ -63,6 +70,7 @@ script = ExtResource("2_jt3no")
 
 [node name="SfxVollbl" type="Label" parent="TabContainer/Audio" unique_id=796583423]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_0s3wi")
 text = "Sfx Volume"
 horizontal_alignment = 1
 
@@ -83,6 +91,7 @@ anchor_bottom = 1.0
 offset_top = -8.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_35y0k")
 text = "Back"
 
 [connection signal="value_changed" from="TabContainer/Audio/MasterVol" to="." method="_on_master_vol_value_changed"]
